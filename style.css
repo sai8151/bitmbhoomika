@@ -5,6 +5,7 @@
   body {
     margin: 0px;
     font-family: 'segoe ui';
+    background-image: url(https://img.freepik.com/free-vector/colorful-watercolor-rainbow-background_125540-151.jpg?w=826&t=st=1695140796~exp=1695141396~hmac=16fbccd01268327c5a79ae06c6f52725145c0c023d04bbeb953830127d443497);background-repeat: no-repeat;background-size: cover;
   }
   
   .nav {
@@ -41,10 +42,11 @@
     padding: 13px 10px 13px 10px;
     text-decoration: none;
     color: #efefef;
+    transition: all 0.3s ease-in-out;
   }
   
   .nav > .nav-links > a:hover {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.836);
   }
   
   .nav > #nav-check {
