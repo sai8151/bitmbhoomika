@@ -1,50 +1,118 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HTML form submit to Google Sheet</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sheets API Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="container text-center">
-    <br>
-    <h1>HTML form submit to Google Sheet</h1>
-    <br>
-    <div class="card mx-auto" style="width: 18rem;">
-      <div class="card-body">
-        <form name="glr">
-          <div class="mb-3">
-            <input name="fullname" type="text" class="form-control" placeholder="Fullname" required>
-          </div>
+    <div class="container">
+        <h2>Student Registration Form</h2>
+        <form id="registrationForm">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
 
-          <div class="mb-3">
-            <input name="email" type="email" class="form-control" placeholder="Email" required>
-          </div>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
 
-          <button type="submit" class="btn btn-primary">Send</button>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <button type="button" onclick="submitForm()">Submit</button>
         </form>
-      </div>
     </div>
 
-  </div>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+        function submitForm() {
+            const spreadsheetId = '1yg5ZYbQVPwvfadPM2FGZDS4Nd6fOLvv2QJSOKvjVh3Y';
+            const range = 'Sheet1';
 
-  <script>
-    const scriptURL = 'AKfycbzdI34hK8k1syroAaG6qS7D1FjQYpk-QycgqSZrl78tuv5BC-D4XPEH7mjoflLDMfFqmg'
-    const form = document.forms['glr']
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const gender = document.getElementById('gender').value;
 
-    form.addEventListener('submit', e => {
-      e.preventDefault()
-      fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-        .then(response => console.log('Success!', response))
-        .catch(error => console.error('Error!', error.message))
-    })
-  </script>
+            const values = [[firstName, lastName, email, gender]];
 
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+            gapi.load('client', function () {
+                gapi.client.init({
+                    apiKey: 'AIzaSyBcg4ihWNqLmnEQIgugAy11Ci9GJWVNQgU',
+                    clientId: '677420868651-47gmtu96biacc2t7h52t4qq0da7jqfev.apps.googleusercontent.com',
+                    discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+                    scope: 'https://www.googleapis.com/auth/spreadsheets',
+                }).then(function () {
+                    return gapi.auth2.getAuthInstance().signIn();
+                }).then(function () {
+                    gapi.client.sheets.spreadsheets.values.append({
+                        spreadsheetId,
+                        range,
+                        valueInputOption: 'RAW',
+                        values,
+                    }).then(function (response) {
+                        console.log('Data inserted:', response);
+                        // Reset the form or show a success message
+                    }, function (error) {
+                        console.error('Error inserting data:', error);
+                        // Handle the error
+                    });
+                });
+            });
+        }
+    </script>
 </body>
-
 </html>
