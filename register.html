@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            margin: 10 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 99%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script src="https://apis.google.com/js/api.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <h2>Student Registration Form</h2>
+        <form onsubmit="submitForm(event)>
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script>
+        function submitForm(event) {
+            event.preventDefault(); // Prevent the form from submitting via HTTP
+    
+            // Define the spreadsheet ID and range
+            const spreadsheetId = '1yg5ZYbQVPwvfadPM2FGZDS4Nd6fOLvv2QJSOKvjVh3Y';
+            const range = 'Sheet1!A2:D2'; // Update this to the desired range
+    
+            // Get form data
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const gender = document.getElementById('gender').value;
+    
+            // Prepare the data to insert into the sheet
+            const values = [[firstName, lastName, email, gender]];
+    
+            // Initialize the Google API client
+            gapi.load('client', function () {
+                gapi.client.init({
+                    apiKey: '677420868651-47gmtu96biacc2t7h52t4qq0da7jqfev.apps.googleusercontent.com',
+                    discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+                }).then(function () {
+                    // Authorize the client with the user's Google Sheets scope
+                    return gapi.auth2.getAuthInstance().signIn();
+                }).then(function () {
+                    // Call the Sheets API to insert the data
+                    gapi.client.sheets.spreadsheets.values.append({
+                        spreadsheetId,
+                        range,
+                        valueInputOption: 'RAW',
+                        values,
+                    }).then(function (response) {
+                        console.log('Data inserted:', response);
+                        // Reset the form or show a success message
+                    }, function (error) {
+                        console.error('Error inserting data:', error);
+                        // Handle the error
+                    });
+                });
+            });
+        }
+    </script>
+    
+</body>
+</html>
