@@ -51,7 +51,9 @@ body {
 .nav>#nav-check {
   display: none;
 }
-
+table, th, td {
+  border: 1px solid;
+}
 #links {
   background-color: rgb(253, 251, 251);
   padding: 70px;
