@@ -3,7 +3,7 @@
 
 
 <pre>
-  github bitm bhoomika live || bitm bhoomika live magazine github
+github bitm bhoomika live || bitm bhoomika live magazine github
 
 bitmbhoomika.live/
 Topics
