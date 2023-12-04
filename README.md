@@ -1,7 +1,7 @@
 # bitmbhoomika
 <a href="https://bitmbhoomika.live/">view page</a>
 
-
+currently not available.
 <pre>
 github bitm bhoomika live || bitm bhoomika live magazine github
 
